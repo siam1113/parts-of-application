@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Copy to Clipboard</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        #container{
+            width: 50%;
+            margin: auto;
+            border: 1px solid black;
+            margin-top: 15%;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        .component{
+            padding: 1rem;
+            display: flex;
+            justify-content: center;
+        }
+
+        .component input {
+            font-size: 1.5rem;
+            font-family: monospace;
+            padding: 0.5rem;
+            border-radius: 0.3rem;
+        }   
+        
+        .component button {
+            font-size: 1.5rem;
+            font-family: monospace;
+            padding: 0.5rem;
+            border-radius: 0.3rem;
+        }  
+    </style>
+</head>
+<body>
+    <div id="container">
+        <h1>Copy to Clipboard</h1>
+        <div class="component">
+            <input type="text" id="copy-input" value="npm i myto@latest" readonly/>
+            <button id="copy-button">Copy</button>
+        </div>
+
+        <div class="component">
+            <input type="text" id="paste-input" />
+            <button id="paste-button">Paste</button>
+        </div>
+    </div>
+    <script>
+        const copyButton = document.getElementById("copy-button");
+        const pasteButton = document.getElementById("paste-button");
+        const copyInput = document.getElementById("copy-input");
+        const pasteInput = document.getElementById("paste-input");
+
+        copyButton.addEventListener('click', () => {
+            const inputText = copyInput.value;
+            navigator.clipboard.writeText(inputText)
+            copyButton.innerText = "✅";
+            setTimeout(() => {
+                copyButton.innerText = "Copy";
+            }, 3000);
+        });
+
+        pasteButton.addEventListener('click', () => {
+            navigator.clipboard.readText().then((clipText) => (pasteInput.value = clipText));
+            pasteButton.innerText = "✅";
+            setTimeout(() => {
+                pasteButton.innerText = "Paste";
+            }, 3000);
+        });
+    </script>
+</body>
+</html>
