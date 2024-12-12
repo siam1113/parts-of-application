@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Slack Clone - Message</title>
+    <style>
+        *{
+            box-sizing: border-box;
+        }
+
+        div#container {
+            border: 1px solid gray;
+        }
+
+        div#message {
+            padding: 0.5rem;
+            margin: 0.5rem 0rem;
+            width: 100%;
+            font-size: 1rem;
+            resize: none;
+            font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+            border: none;
+            caret-color: auto;
+        }
+
+        /*
+        * Formatting
+        */
+        div#format {
+            position: relative;
+            top: 0;
+        }
+
+        div#format span {
+            padding: 0rem 0.3rem 0rem 0.3rem;
+            border-radius: 0.1rem;
+        }
+
+        span.text-format {
+            cursor: pointer;
+        }
+
+        
+        span.bold {
+            font-weight: bold;
+        }
+
+        span.italic {
+           font-style: italic;
+        }
+
+        span.underline {
+            text-decoration: underline;
+        }
+
+        span.strikethrough {
+            text-decoration: line-through;
+        }
+
+        span.active {
+            background-color: lightgray;
+        }
+
+        div#tool{
+            position: relative;
+            bottom: 0;
+        }
+    </style>
+</head>
+<body>
+    <div id="container">
+        <div id="format">
+            <span class="text-format bold">B</span>
+            <span class="text-format italic">I</span>
+            <span class="text-format underline">U</span>
+            <span class="text-format strikethrough">S</span>
+            <span>|</span>
+        </div>
+        <div id="message" contenteditable tabindex="0">
+        </div>
+        <div id="tool">
+            <button id="send">Send</button>
+        </div>
+    </div>
+
+    <div id="thread">
+
+    </div>
+    <script>
+        const messageInput = document.getElementById("message");
+        const textFormatters = document.getElementsByClassName("text-format");
+        const sendButton = document.getElementById("send");
+        const thread = document.getElementById("thread");
+
+        for(let textFormatter of textFormatters){
+            textFormatter.addEventListener('click', (e) => {
+                const formatType = e.target.className.split(" ")[1];
+                e.target.className.includes("active") ? e.target.classList.remove("active") : e.target.classList.add("active");;
+                messageInput.focus();
+                const cursorPosition = messageInput.selectionStart;
+                /*
+                * @TODO
+                * `.exeCommand` has been deprecated, so figure a new way to handle enabling formatting
+                */
+                document.execCommand(formatType)
+            });
+        }
+
+        sendButton.addEventListener("click", () => {
+            thread.innerHTML += `<b>${new Date().toLocaleTimeString()}</b>:  ${messageInput.innerHTML} </br>`;
+        })
+
+    </script>
+</body>
+</html>
